@@ -1,4 +1,5 @@
 import socket
+import pickle
 import binascii
 from bitarray import bitarray
 
@@ -11,14 +12,16 @@ class Emisor:
         self.sckt.listen(3)
         print("Se creo un emisor.")
     
-    def enviar_objeto(self, cadena__bitarray):
+    def enviar_objeto(self, data):
         clientsocket, address = self.sckt.accept()
-        clientsocket.send(cadena__bitarray)
+        clientsocket.send(data)
 
     def enviar_cadena_segura(self, msg):
         cadena__binascii = bin(int.from_bytes(msg.encode(), 'big'))
         cadena__bitarray = bitarray(cadena__binascii[2:])
-        self.enviar_objeto(cadena__bitarray)
+        data = pickle.dumps(cadena__bitarray)
+        self.enviar_objeto(data)
+        #self.enviar_objeto(cadena__binascii)
 
     def enviar_cadena(self):
         self.enviar_cadena_segura("hola que tal")
