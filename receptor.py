@@ -3,6 +3,15 @@ import pickle
 import binascii
 from bitarray import bitarray
 
+def BitarrayToStr(array):
+    result = ""
+    for val in array:
+        if val:
+            result = result + "1"
+        else:
+            result = result + "0"
+    return result
+
 class Receptor:
     
     def __init__(self, name):
@@ -11,18 +20,20 @@ class Receptor:
         self.sckt.connect((socket.gethostname(), 1234))
         print("Se creo un receptor.")
 
-    def enviar_cadena_segura(self, msg):
-        cadena__binascii = bin(int.from_bytes(msg.encode(), 'big'))
-        cadena__bitarray = bitarray(cadena__binascii[2:])
-        self.enviar_objeto(cadena__bitarray)
+    def recibir_cadena(self, msg):
+        print("Mensaje recibido: ", msg)
 
-    def enviar_cadena(self):
-        self.enviar_cadena_segura("hola que tal")
+    def recibir_cadena_segura(self, cadena__bitarray):
+        cadena__binascii = "0b" + BitarrayToStr(cadena__bitarray)
+        msg_crudo = int(cadena__binascii, 2)
+        msg = msg_crudo.to_bytes((msg_crudo.bit_length() + 7) // 8, 'big').decode()
+        self.recibir_cadena(msg)
 
     def recibir_objeto(self):
         data = self.sckt.recv(2048)
         cadena__bitarray = pickle.loads(data)
-        print(cadena__bitarray)
+        self.recibir_cadena_segura(cadena__bitarray)
+        
 
 re = Receptor("Raul")
 re.recibir_objeto()
