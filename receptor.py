@@ -23,7 +23,7 @@ class Receptor:
         print("Se creo un receptor.")
 
     def recibir_cadena(self, msg):
-        print("Mensaje recibido: ", self.verificar(msg))
+        print("Mensaje recibido: ", self.decode(self.verificar(msg)))
 
     def recibir_cadena_segura(self, cadena__bitarray):
         cadena__binascii = "0b" + BitarrayToStr(cadena__bitarray)
@@ -52,6 +52,10 @@ class Receptor:
         error = hamming.detectar_error(bin_mes, r)
         bin_mes = hamming.corregirMensaje(bin_mes, error)
         return bin_mes
+
+    def decode(self, s, encoding='UTF-8'):
+        byte_string = ''.join(chr(int(s[i*8:i*8+8],2)) for i in range(len(s)//8))
+        return byte_string.decode(encoding)
 
 re = Receptor("Raul")
 re.recibir_objeto()

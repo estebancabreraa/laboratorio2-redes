@@ -7,6 +7,17 @@ class Hamming:
             if(2**i >= n + i + 1): 
                 return i 
 
+    def detectar_error(self, data, r): 
+        n = len(data) 
+        result = 0
+        for i in range(r): 
+            value = 0
+            for j in range(1, n + 1): 
+                if(j & (2**i) == (2**i)): 
+                    value = value ^ int(data[-1 * j])     
+            result = result + value*(10**i) 
+        return int(str(result), 2) 
+
     def pos_bit_red(self, data, r): 
         j, k = 0, 1
         m = len(data)
@@ -20,27 +31,6 @@ class Hamming:
                 result = result + data[-1 * k] 
                 k += 1
         return result[::-1] 
-
-    def calcu_bit_par(self, data, r): 
-        n = len(data) 
-        for i in range(r): 
-            value = 0
-            for j in range(1, n + 1):  
-                if(j & (2**i) == (2**i)): 
-                    value = value ^ int(data[-1 * j]) 
-            data = data[:n-(2**i)] + str(value) + data[n-(2**i)+1:] 
-        return data
-
-    def detectar_error(self, data, r): 
-        n = len(data) 
-        result = 0
-        for i in range(r): 
-            value = 0
-            for j in range(1, n + 1): 
-                if(j & (2**i) == (2**i)): 
-                    value = value ^ int(data[-1 * j])     
-            result = result + value*(10**i) 
-        return int(str(result), 2) 
 
     def corregirMensaje(self, bin_mes, error):
         if(error > len(bin_mes)):
