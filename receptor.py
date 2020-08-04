@@ -2,6 +2,8 @@ import socket
 import pickle
 import binascii
 from bitarray import bitarray
+from fletcher import FletcherChecksum
+from hamming import Hamming
 
 def BitarrayToStr(array):
     result = ""
@@ -33,7 +35,23 @@ class Receptor:
         data = self.sckt.recv(2048)
         cadena__bitarray = pickle.loads(data)
         self.recibir_cadena_segura(cadena__bitarray)
-        
+
+    def convertir(self, message):
+        result = ''
+        for x in message:
+            if (x):
+                result = result + ''.join('1')
+            else:
+                result = result + ''.join('0')
+        return result
+
+    def verificar(self, message):
+        bin_mes = self.convertir(message)
+        hamming = Hamming()
+        r = hamming.calcu_bit_red(len(bin_mes))
+        error = hamming.detectar_error(bin_mes, r)
+        bin_mes = hamming.corregirMensaje(bin_mes, error)
+        return bin_mes
 
 re = Receptor("Raul")
 re.recibir_objeto()
