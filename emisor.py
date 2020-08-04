@@ -36,24 +36,7 @@ class Emisor:
         #self.enviar_objeto(cadena__binascii)
 
     def enviar_cadena(self):
-        self.enviar_cadena_segura("hola que tal")
-
-    def convertir(self, message):
-        result = ''
-        for x in message:
-            result = result + ''.join(format(ord(x),'b')) 
-        return result
-    
-    def verificar(self, message):
-        bin_mes = self.convertir(message)
-        hamming = Hamming()
-        r = hamming.calcu_bit_red(len(bin_mes))
-        bin_mes = hamming.pos_bit_red(bin_mes, r)
-        bin_mes = hamming.calcu_bit_par(bin_mes, r)
-        message = bitarray(bin_mes)
-        return message
-
-    
+        self.enviar_cadena_segura("hola que tal")   
 
 
 em = Emisor("Esteban")

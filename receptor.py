@@ -23,7 +23,7 @@ class Receptor:
         print("Se creo un receptor.")
 
     def recibir_cadena(self, msg):
-        print("Mensaje recibido: ", msg)
+        print("Mensaje recibido: ", self.verificar(msg))
 
     def recibir_cadena_segura(self, cadena__bitarray):
         cadena__binascii = "0b" + BitarrayToStr(cadena__bitarray)
