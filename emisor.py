@@ -23,7 +23,6 @@ class Emisor:
         cadena = cadena[:pos] + str(caracter) + cadena[pos+1:]
         return cadena
 
-        
     def enviar_objeto(self, data):
         clientsocket, address = self.sckt.accept()
         clientsocket.send(data)
@@ -33,7 +32,6 @@ class Emisor:
         cadena__bitarray = bitarray(self.cadena_con_ruido(cadena__binascii[2:]))
         data = pickle.dumps(cadena__bitarray)
         self.enviar_objeto(data)
-        #self.enviar_objeto(cadena__binascii)
 
     def enviar_cadena(self):
         self.enviar_cadena_segura("hola que tal")   
