@@ -14,6 +14,10 @@ def BitarrayToStr(array):
             result = result + "0"
     return result
 
+def write_log(log):
+    with open("Hamming_con_ruido.csv", "a") as myfile:
+        myfile.write(str(log) + "\n")
+
 class Receptor:
     
     def __init__(self, name):
@@ -50,7 +54,7 @@ class Receptor:
         hamming = Hamming()
         r = hamming.calcu_bit_red(len(bin_mes))
         error = hamming.detectar_error(bin_mes, r)
-        print(error)
+        print("El error se encuentra en la posicion ", error, " de la cadena binaria.")
         bin_mes = hamming.corregirMensaje(bin_mes, error)
         return bin_mes
 

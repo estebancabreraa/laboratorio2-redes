@@ -17,6 +17,10 @@ class Emisor:
         self.sckt.listen(3)
         print("Se creo un emisor.")
 
+    def verificacion(self, cadena):
+        fletcher = FletcherChecksum()
+        print(fletcher.generate_checksum(cadena))
+
     def cadena_con_ruido(self, cadena):
         caracter = randrange(0, 2)
         pos = randrange(0, len(cadena) - 1)
@@ -29,7 +33,9 @@ class Emisor:
 
     def enviar_cadena_segura(self, msg):
         cadena__binascii = bin(int.from_bytes(msg.encode(), 'big'))
-        cadena__bitarray = bitarray(self.cadena_con_ruido(cadena__binascii[2:]))
+        cadena__ruido = self.cadena_con_ruido(cadena__binascii[2:])
+        #self.verificacion(cadena__ruido)
+        cadena__bitarray = bitarray(cadena__ruido)
         data = pickle.dumps(cadena__bitarray)
         self.enviar_objeto(data)
 
