@@ -14,6 +14,10 @@ def BitarrayToStr(array):
             result = result + "0"
     return result
 
+def write_log(log):
+    with open("Hamming_con_ruido.csv", "a") as myfile:
+        myfile.write(str(log) + "\n")
+
 class Receptor:
     
     def __init__(self, name):
@@ -23,10 +27,10 @@ class Receptor:
         print("Se creo un receptor.")
 
     def recibir_cadena(self, msg):
-        print("Mensaje recibido: ", self.decode(self.verificar(msg)))
+        print("Mensaje recibido: ", msg)
 
     def recibir_cadena_segura(self, cadena__bitarray):
-        cadena__binascii = "0b" + BitarrayToStr(cadena__bitarray)
+        cadena__binascii = "0b" + self.verificar(cadena__bitarray)
         msg_crudo = int(cadena__binascii, 2)
         msg = msg_crudo.to_bytes((msg_crudo.bit_length() + 7) // 8, 'big').decode()
         self.recibir_cadena(msg)
@@ -50,6 +54,7 @@ class Receptor:
         hamming = Hamming()
         r = hamming.calcu_bit_red(len(bin_mes))
         error = hamming.detectar_error(bin_mes, r)
+        print("El error se encuentra en la posicion ", error, " de la cadena binaria.")
         bin_mes = hamming.corregirMensaje(bin_mes, error)
         return bin_mes
 

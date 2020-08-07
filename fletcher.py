@@ -7,4 +7,4 @@ class FletcherChecksum:
         for b in mes:
             a = (a + b) % size
             b = (b + a) % size
-        return (b << fetch) | a
+        return str((b << fetch) | a)
